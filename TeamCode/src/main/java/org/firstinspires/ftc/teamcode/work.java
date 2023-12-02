@@ -31,7 +31,8 @@ public class work extends LinearOpMode {
     private DcMotorEx backLeftDrive = null;
     private DcMotorEx backRightDrive = null;
 
-    private DcMotorEx climberMotor = null;
+    private DcMotorEx climberMotorLeft = null;
+    private DcMotorEx climberMotorRight = null;
 
     private Servo shooter = null;
 
@@ -45,7 +46,8 @@ public class work extends LinearOpMode {
         frontRightDrive = hardwareMap.get(DcMotorEx.class, "FR");
         backLeftDrive = hardwareMap.get(DcMotorEx.class, "BL");
         backRightDrive = hardwareMap.get(DcMotorEx.class, "BR");
-        climberMotor = hardwareMap.get(DcMotorEx.class, "climber");
+        climberMotorLeft = hardwareMap.get(DcMotorEx.class, "climberLeft");
+        climberMotorRight = hardwareMap.get(DcMotorEx.class, "climberRight");
         arm = hardwareMap.get(DcMotorEx.class, "Arm");
         intake = hardwareMap.get(Servo.class, "intake");
         shooter = hardwareMap.get(Servo.class, "shooter");
@@ -53,19 +55,30 @@ public class work extends LinearOpMode {
 
         frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        climberMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        climberMotorLeft.setDirection(DcMotorSimple.Direction.REVERSE);
+        climberMotorRight.setDirection(DcMotorSimple.Direction.REVERSE);
 
         backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        climberMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        climberMotorLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        climberMotorRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        climberMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        
+        climberMotorLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        climberMotorLeft.setTargetPosition(0);
+        climberMotorLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        climberMotorLeft.setPower(0.1);
+
+        climberMotorRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        climberMotorRight.setTargetPosition(0);
+        climberMotorRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        climberMotorRight.setPower(0.1);
 
         arm.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         arm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -131,17 +144,11 @@ public class work extends LinearOpMode {
     }
 
     private void climber() {
-        if (gamepad2.y){
-            climberMotor.setPower(1);
+        if (gamepad2.dpad_up) {
+            climberMotorLeft.setTargetPosition(climberMotorLeft.getTargetPosition() + 50);
         }
-        else if (gamepad2.a) {
-            climberMotor.setPower(-1);
-        }
-        else if (gamepad2.b){
-            climberMotor.setTargetPosition(climberMotor.getCurrentPosition());
-        }
-        else {
-            climberMotor.setPower(0);
+        else if (gamepad2.dpad_down){
+            climberMotorLeft.setTargetPosition(climberMotorLeft.getTargetPosition() - 50);
         }
 
     }
@@ -183,7 +190,7 @@ public class work extends LinearOpMode {
                 shooter.setPosition(0.5);
             }
 
-//            telemetry.addData("climber pos", climberMotor.getCurrentPosition());
+//            telemetry.addData("climber pos", climberMotorLeft.getCurrentPosition());
             updateTelemetry(telemetry);
 
             //joystickTankDrive();
