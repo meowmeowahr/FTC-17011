@@ -25,7 +25,7 @@ public class hello extends LinearOpMode {
     public static double SIDE_LENGTH = 10;
     public static double SPEED_MULTIPLIER = 0.95;
 
-    public static double INTAKE_OPEN_POS = 0.4;
+    public static double INTAKE_OPEN_POS = 0;
     public static double INTAKE_CLOSE_POS = 0.6;
 
     public static int
@@ -51,8 +51,8 @@ public class hello extends LinearOpMode {
     private Servo intake = null;
 
     private DcMotorEx arm = null;
-    private CRServo climberHookLeft;
-    private CRServo climberHookRight;
+    private Servo climberHookLeft;
+    private Servo climberHookRight;
 
 
 
@@ -67,14 +67,13 @@ public class hello extends LinearOpMode {
         arm = hardwareMap.get(DcMotorEx.class, "Arm");
         intake = hardwareMap.get(Servo.class, "intake");
         shooter = hardwareMap.get(Servo.class, "shooter");
-        climberHookLeft = hardwareMap.get(CRServo.class, "climberHookLeft");
-        climberHookRight = hardwareMap.get(CRServo.class, "climberHookRight");
+        climberHookLeft = hardwareMap.get(Servo.class, "climberHookLeft");
+        climberHookRight = hardwareMap.get(Servo.class, "climberHookRight");
 
         frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        climberHookLeft.setDirection(Servo.Direction.REVERSE);
 
-        backLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        backRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRightDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontLeftDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         climberMotorLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -156,37 +155,53 @@ public class hello extends LinearOpMode {
         // This ensures all the powers maintain the same ratio,
         // but only if at least one is out of the range [-1, 1]
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
-        double frontLeftPower = -(y + x + rx) / denominator; //A-RC has negative before parentheses and B-RC has no negative
-        double backLeftPower = -(y - x + rx) / denominator;
-        double frontRightPower = -(y - x - rx) / denominator;
-        double backRightPower = -(y + x - rx) / denominator;
+        double frontLeftPower = -(y - x + rx) / denominator; //A-RC has negative before parentheses and B-RC has no negative
+        double backLeftPower = -(y + x + rx) / denominator;
+        double frontRightPower = -(y + x - rx) / denominator;
+        double backRightPower = -(y - x - rx) / denominator;
 
         frontLeftDrive.setPower(frontLeftPower * SPEED_MULTIPLIER);
         backLeftDrive.setPower(backLeftPower * SPEED_MULTIPLIER);
         frontRightDrive.setPower(frontRightPower * SPEED_MULTIPLIER);
         backRightDrive.setPower(backRightPower * SPEED_MULTIPLIER);
-
-
     }
 
     private void climber() {
-        if (gamepad2.dpad_up) {
+        /**only for the manual controls**/
+        if (gamepad1.dpad_up) {
             climberMotorLeft.setTargetPosition(climberMotorLeft.getTargetPosition() + 20);
             climberMotorRight.setTargetPosition(climberMotorLeft.getTargetPosition() + 20);
         }
-        else if (gamepad2.dpad_down){
+       else if (gamepad1.dpad_down){
             climberMotorLeft.setTargetPosition(climberMotorLeft.getTargetPosition() - 20);
             climberMotorRight.setTargetPosition(climberMotorLeft.getTargetPosition() - 20);
+        }
+        /**actual controls for comp climb**/
+        if (gamepad2.dpad_up){
+            climberMotorLeft.setTargetPosition(4000);
+            climberMotorRight.setTargetPosition(3800);
+        }
+        else if (gamepad2.dpad_down){
+            climberMotorLeft.setTargetPosition(0);
+            climberMotorRight.setTargetPosition(0);
+        }
+        if (gamepad2.dpad_left) {
+            climberHookLeft.setPosition(0);
+            climberHookRight.setPosition(0);
+        }
+        else if (gamepad2.dpad_right){
+            climberHookLeft.setPosition(0.4);
+            climberHookRight.setPosition(0.42);
         }
     }
 
 
     public void armFunctions() {
         if (gamepad1.right_bumper){
-            intake.setPosition(INTAKE_CLOSE_POS);
+            intake.setPosition(0.6);
         }
         else if (gamepad1.left_bumper){
-            intake.setPosition(INTAKE_OPEN_POS);
+            intake.setPosition(0.4);
         }
 
         int encoderCount = arm.getCurrentPosition();
@@ -243,7 +258,7 @@ public class hello extends LinearOpMode {
         initializeMotors();
         intake.scaleRange(0,1);
         intake.setDirection(Servo.Direction.FORWARD);
-        intake.setPosition(0.5);
+        intake.setPosition(0.6);
 
         shooter.scaleRange(0,1);
         waitForStart();
@@ -251,6 +266,8 @@ public class hello extends LinearOpMode {
         while (opModeIsActive()) {
             telemetry.addData("arm pos", arm.getCurrentPosition());
             telemetry.addData("arm pwr", arm.getCurrent(CurrentUnit.MILLIAMPS));
+            telemetry.addData("climber pos left", climberMotorLeft.getCurrentPosition());
+            telemetry.addData("climber pos right", climberMotorRight.getCurrentPosition());
             climber();
             if (gamepad2.dpad_up){
                 shooter.setPosition(0.9);

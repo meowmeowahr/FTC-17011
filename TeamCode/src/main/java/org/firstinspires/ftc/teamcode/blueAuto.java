@@ -72,9 +72,9 @@ public class blueAuto extends LinearOpMode {
 private void notStarted() {
     while (!isStarted()) {
 
-        if (GolfBotIPCVariables.ballX < 300 && GolfBotIPCVariables.ballX > 50) {
+        if ((GolfBotIPCVariables.ballX < 300 && GolfBotIPCVariables.ballX > 50) && GolfBotIPCVariables.ballExists) {
             aprilTagValue = 2;
-        } else if (GolfBotIPCVariables.ballX > -167 && GolfBotIPCVariables.ballX < -112) {
+        } else if ((GolfBotIPCVariables.ballX > -167 && GolfBotIPCVariables.ballX < -112) && GolfBotIPCVariables.ballExists) {
             aprilTagValue = 1;
         } else {
             aprilTagValue = 3;
@@ -118,48 +118,51 @@ private void station() {
         sleep(300);
         arm.setTargetPosition(0);
         sleep(100);
-        intake.setPosition(0.4);
+        intake.setPosition(0.3);
         arm.setTargetPosition(0);
         drive(-300,-300,-300,-300, 0.3);
         sleep(200);
         drive(-700,700,-700,700,0.4);
         sleep(150);
-        drive(-1000,-1000,-1000,-1000,0.6);
-        sleep(100000);
+        drive(-1000, -1000,-1000,-1000, 0.5);
+
     }
     else if (aprilTagValue==(2)) {
         intake.setPosition(0.6);
         arm.setTargetPosition(-40);
         sleep(300);
-        drive(1300,1300,1300,1300,0.4);
+        drive(1400,1400,1400,1400,0.4);
         sleep(300);
         arm.setTargetPosition(0);
         sleep(300);
-        intake.setPosition(0.4);
+        intake.setPosition(0.3);
         arm.setTargetPosition(0);
         sleep(200);
-        drive(-700,-700,-700,-700,0.3);
-        sleep(100000);
+        drive(-1300, -1300,-1300,-1300, 0.5);
+        sleep(200);
 
     }
     else if (aprilTagValue==(1)){
         intake.setPosition(0.6);
-        sleep(300);
-        arm.setTargetPosition(-50);
-        drive(1000,1000,1000,1000,0.4);
-        sleep(300);
-        drive(-500,500,-500,500,0.4);
-        sleep(300);
-        drive(300,300,300,300, 0.5);
         sleep(200);
-        arm.setTargetPosition(0);
+        arm.setTargetPosition(-50);
         sleep(300);
-        intake.setPosition(0.4);
-        drive(-300,-300,-300,-300, 0.5);
-        sleep(500);
-        drive(500,-500,500,-500,0.4);
-        drive(-1000,-1000,-1000,-1000,0.6);
-        sleep(100000);
+        drive(1000,1000,1000,1000,0.6);
+        sleep(200);
+        drive(-700,700,-700,700,0.4);
+        sleep(200);
+        drive(400,400,400,400, 0.3);
+        sleep(300);
+        arm.setTargetPosition(0);
+        sleep(200);
+        intake.setPosition(0.3);
+        arm.setTargetPosition(0);
+        drive(-500,-500,-500,-500, 0.3);
+        sleep(200);
+        drive(700,-700,700,-700,0.4);
+        sleep(150);
+        drive(-1200, -1200,-1200,-1200, 0.5);
+        sleep(200);
     }
 }
 private void backDrop() {
@@ -180,123 +183,57 @@ private void backDrop() {
         sleep(300);
         arm.setTargetPosition(0);
         sleep(100);
-        intake.setPosition(0.4);
+        intake.setPosition(0.3);
         arm.setTargetPosition(0);
         drive(-300,-300,-300,-300, 0.3);
         sleep(200);
         drive(-700,700,-700,700,0.4);
         sleep(150);
-        drive(-2050, 2050,-2050,2050, 0.5);
+        drive(-1000, -1000,-1000,-1000, 0.5);
         sleep(200);
-        drive(490,-490,-490,490,0.5);
-        sleep(300);
-        drive(1000,1000,1000,1000,0.25);
-        sleep(300);
-        intake.setPosition(0.6);
-        sleep(500);
-        drive(-1400,-1400,-1400,-1400,0.3);
-        sleep(200);
-        drive(970, -970,970,-970, 0.6);
-        sleep(300);
-        arm.setTargetPosition(-50);
-        sleep(300);
-        drive(900, 900, 900, 900, 0.5);
-        sleep(300);
-        intake.setPosition(0.6);
-        arm.setTargetPosition(-150);
-        sleep(300);
-        drive(550, 550, 550, 550, 0.2);
-        sleep(500);
-        intake.setPosition(0.4);
-        sleep(500);
-        drive(-300, -300, -300, -300, 0.2);
-        arm.setTargetPosition(0);
-        sleep(500);
-        drive(-800,800,800,-800,0.5);
+        drive(2000,-2000,-2000,2000,0.5);
+        sleep(10000);
     }
     else if (aprilTagValue==(2)) {
         intake.setPosition(0.6);
         arm.setTargetPosition(-40);
         sleep(300);
-        drive(1300,1300,1300,1300,0.4);
+        drive(1400,1400,1400,1400,0.4);
         sleep(300);
         arm.setTargetPosition(0);
         sleep(300);
-        intake.setPosition(0.4);
+        intake.setPosition(0.3);
         arm.setTargetPosition(0);
         sleep(200);
-        drive(-700,-700,-700,-700,0.3);
-        sleep(100);
-        drive(-2000, 2000,-2000,2000, 0.6);
-        sleep(300);
-        drive(500,-500,-500,500,0.5);
-        sleep(300);
-        drive(450,450,450,450,0.4);
-        sleep(300);
-        intake.setPosition(0.6);
-        sleep(500);
-        drive(-1000,-1000,-1000,-1000,0.3);
+        drive(-1300, -1300,-1300,-1300, 0.5);
         sleep(200);
-        drive(970, -970,970,-970, 0.6);
-        sleep(300);
-        arm.setTargetPosition(-50);
-        sleep(300);
-        drive(900, 900, 900, 900, 0.5);
-        sleep(300);
-        intake.setPosition(0.6);
-        arm.setTargetPosition(-150);
-        sleep(300);
-        drive(550, 550, 550, 550, 0.2);
-        sleep(500);
-        intake.setPosition(0.4);
-        sleep(500);
-        drive(-300, -300, -300, -300, 0.2);
-        arm.setTargetPosition(0);
-        sleep(500);
-        drive(-800,800,800,-800,0.5);
+        drive(2000,-2000,-2000,2000,0.5);
+        sleep(10000);
+
     }
     else if (aprilTagValue==(1)){
         intake.setPosition(0.6);
-        sleep(300);
-        arm.setTargetPosition(-50);
-        drive(1000,1000,1000,1000,0.4);
-        sleep(300);
-        drive(-500,500,-500,500,0.4);
-        sleep(300);
-        drive(300,300,300,300, 0.5);
         sleep(200);
-        arm.setTargetPosition(0);
-        sleep(300);
-        intake.setPosition(0.4);
-        drive(-300,-300,-300,-300, 0.5);
-        sleep(500);
-        drive(-1550,1550,-1550,1550,0.4);
-        sleep(300);
-        drive(490,-490,-490,490,0.5);
-        sleep(300);
-        drive(1000,1000,1000,1000,0.25);
-        sleep(300);
-        intake.setPosition(0.6);
-        sleep(500);
-        drive(-800,-800,-800,-800,0.3);
-        sleep(200);
-        drive(970, -970,970,-970, 0.6);
-        sleep(300);
         arm.setTargetPosition(-50);
         sleep(300);
-        drive(950, 950, 950, 950, 0.5);
+        drive(1300,1300,1300,1300,0.6);
+        sleep(200);
+        drive(-700,700,-700,700,0.4);
+        sleep(200);
+        drive(200,200,200,200, 0.3);
         sleep(300);
-        intake.setPosition(0.6);
-        arm.setTargetPosition(-150);
-        sleep(300);
-        drive(550, 550, 550, 550, 0.2);
-        sleep(500);
-        intake.setPosition(0.4);
-        sleep(500);
-        drive(-300, -300, -300, -300, 0.2);
         arm.setTargetPosition(0);
-        sleep(500);
-        drive(-1000,1000,1000,-1000,0.5);
+        sleep(200);
+        intake.setPosition(0.3);
+        arm.setTargetPosition(0);
+        drive(-200,-200,-200,-200, 0.3);
+        sleep(200);
+        drive(700,-700,700,-700,0.4);
+        sleep(150);
+        drive(-1200, -1200,-1200,-1200, 0.5);
+        sleep(200);
+        drive(2000,-2000,-2000,2000,0.5);
+        sleep(10000);
     }
 
     while (opModeIsActive()) {
